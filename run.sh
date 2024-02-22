@@ -33,8 +33,19 @@ ask() {
     return 0
 }
 
-# Execute project
-execute() {
+# -----------------------------------------------------------------------------
+do_clean() {
+    [[ -d build ]] && rm -rvf build
+}
+
+do_build() {
+    mkdir build
+    pushd build
+    cmake .. && make -j16 all
+    popd
+}
+
+do_execute() {
     dir="$1"
     target="$2"
     pushd "$dir"
@@ -42,7 +53,7 @@ execute() {
     popd
 }
 
-execute_mpi() {
+do_execute_mpi() {
     dir="$1"
     target="$2"
     pushd "$dir"
@@ -50,13 +61,11 @@ execute_mpi() {
     popd
 }
 
-# -----------------------------------------------------------------------------
 [[ $# == 0 ]] && die "usage: $0 clean | build | execute"
 
 DO_CLEAN=false
 DO_BUILD=false
 DO_EXECUTE=false
-DO_GENERATE=false
 for arg in "$@"; do
     case $arg in
     clean)
@@ -77,21 +86,12 @@ for arg in "$@"; do
     esac
 done
 
-if [[ $DO_CLEAN == "true" ]]; then
-    [[ -d build ]] && rm -rvf build
-fi
-
-if [[ $DO_BUILD == "true" ]]; then
-    mkdir build
-    pushd build
-    cmake .. && make -j16 all
-    popd
-fi
-
+[[ $DO_CLEAN == "true" ]] && do_clean
+[[ $DO_BUILD == "true" ]] && do_build
 if [[ $DO_EXECUTE == "true" ]]; then
     pushd build/projects
-    execute raymarchsphere     ./raymarchsphere
-    execute raytraceweekone    ./raytraceweekone
-    execute raytraceweektwo    ./raytraceweektwo
+    do_execute raymarchsphere     ./raymarchsphere
+    do_execute raytraceweekone    ./raytraceweekone
+    do_execute raytraceweektwo    ./raytraceweektwo
     popd
 fi

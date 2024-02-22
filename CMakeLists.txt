@@ -27,7 +27,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 project(playground)
 
 set(CORE_ROOT_DIR ${CMAKE_SOURCE_DIR}/core)
-
 add_subdirectory(core/external)
 add_subdirectory(core/core)
 add_subdirectory(projects/raymarchsphere)
