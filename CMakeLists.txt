@@ -25,8 +25,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 project(playground)
-
-set(CORE_ROOT_DIR ${CMAKE_SOURCE_DIR}/core)
 add_subdirectory(core/external)
 add_subdirectory(core/core)
 add_subdirectory(projects/raymarchsphere)
